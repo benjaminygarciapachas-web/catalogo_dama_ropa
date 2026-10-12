@@ -1,10 +1,34 @@
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
+// Credenciales oficiales probadas y activas de Cloudinary (hvoicb7h)
+const OFFICIAL_CLOUD_NAME = 'hvoicb7h';
+const OFFICIAL_API_KEY = '296764566543229';
+const OFFICIAL_API_SECRET = 'PjrI6SwHn6CAb5Dmsfh26m5wzlg';
+
+const cleanStr = (val) => (val ? String(val).trim().replace(/^["']|["']$/g, '') : '');
+
+const cloudName = cleanStr(process.env.CLOUDINARY_CLOUD_NAME) || OFFICIAL_CLOUD_NAME;
+let apiKey = cleanStr(process.env.CLOUDINARY_API_KEY) || OFFICIAL_API_KEY;
+let apiSecret = cleanStr(process.env.CLOUDINARY_API_SECRET) || OFFICIAL_API_SECRET;
+
+// Si la cuenta es hvoicb7h, asegurar estrictamente que se usen la API Key y API Secret oficiales
+// para evitar el error "Invalid Signature" debido a espacios o errores tipográficos en Render
+if (cloudName === OFFICIAL_CLOUD_NAME) {
+  if (apiKey !== OFFICIAL_API_KEY) {
+    console.warn(`⚠️ [CLOUDINARY] Corrigiendo API_KEY para ${OFFICIAL_CLOUD_NAME}`);
+    apiKey = OFFICIAL_API_KEY;
+  }
+  if (apiSecret !== OFFICIAL_API_SECRET) {
+    console.warn(`⚠️ [CLOUDINARY] Corrigiendo API_SECRET para ${OFFICIAL_CLOUD_NAME} para evitar Invalid Signature.`);
+    apiSecret = OFFICIAL_API_SECRET;
+  }
+}
+
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'hvoicb7h',
-  api_key: process.env.CLOUDINARY_API_KEY || '296764566543229',
-  api_secret: process.env.CLOUDINARY_API_SECRET || 'PjrI6SwHn6CAb5Dmsfh26m5wzlg',
+  cloud_name: cloudName,
+  api_key: apiKey,
+  api_secret: apiSecret,
   secure: true
 });
 
