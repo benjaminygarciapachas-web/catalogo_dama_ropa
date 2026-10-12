@@ -68,7 +68,8 @@ const subcats = [
   { id: 13, categoria_id: 1, tipo_grupo: 'Normal', name: 'casacas', slug: 'casacas' },
   { id: 14, categoria_id: 1, tipo_grupo: 'Normal', name: 'chompas', slug: 'chompas' },
   { id: 15, categoria_id: 1, tipo_grupo: 'Normal', name: 'conjuntos', slug: 'conjuntos' },
-  { id: 16, categoria_id: 1, tipo_grupo: 'Normal', name: 'ropa_fitnes', slug: 'ropa-fitnes' }
+  { id: 16, categoria_id: 1, tipo_grupo: 'Normal', name: 'ropa_fitnes', slug: 'ropa-fitnes' },
+  { id: 17, categoria_id: 1, tipo_grupo: 'Normal', name: 'blazzer', slug: 'blazzer' }
 ];
 
 db.exec(`DELETE FROM subcategorias;`);

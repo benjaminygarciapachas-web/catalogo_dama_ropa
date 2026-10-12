@@ -79,11 +79,12 @@ function initDatabase() {
       { id: 13, categoria_id: 1, tipo_grupo: 'Normal', name: 'casacas', slug: 'casacas' },
       { id: 14, categoria_id: 1, tipo_grupo: 'Normal', name: 'chompas', slug: 'chompas' },
       { id: 15, categoria_id: 1, tipo_grupo: 'Normal', name: 'conjuntos', slug: 'conjuntos' },
-      { id: 16, categoria_id: 1, tipo_grupo: 'Normal', name: 'ropa_fitnes', slug: 'ropa-fitnes' }
+      { id: 16, categoria_id: 1, tipo_grupo: 'Normal', name: 'ropa_fitnes', slug: 'ropa-fitnes' },
+      { id: 17, categoria_id: 1, tipo_grupo: 'Normal', name: 'blazzer', slug: 'blazzer' }
     ];
 
     // Limpiar subcategorías antiguas que no correspondan
-    db.exec(`DELETE FROM subcategorias WHERE id > 16 OR categoria_id != 1;`);
+    db.exec(`DELETE FROM subcategorias WHERE id > 17 OR categoria_id != 1;`);
 
     const insertSubcat = db.prepare(`
       INSERT OR REPLACE INTO subcategorias (id, categoria_id, tipo_grupo, name, slug)
