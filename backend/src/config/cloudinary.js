@@ -13,7 +13,7 @@ const CloudinaryService = {
   async uploadPhoto(filePathOrBuffer, filename = '') {
     try {
       const uploadOptions = {
-        folder: 'catalogo_caballeros/prendas',
+        folder: 'catalogo_dama/prendas',
         resource_type: 'image',
         use_filename: true,
         unique_filename: true,
@@ -48,7 +48,7 @@ const CloudinaryService = {
 
       const res = await cloudinary.uploader.upload(base64, {
         resource_type: 'raw',
-        public_id: 'database_backups/catalogo_products.json',
+        public_id: 'database_backups/catalogo_dama_products.json',
         overwrite: true,
         invalidate: true
       });
@@ -65,7 +65,7 @@ const CloudinaryService = {
   async restoreDatabaseBackup() {
     try {
       const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'hvoicb7h';
-      const backupUrl = `https://res.cloudinary.com/${cloudName}/raw/upload/database_backups/catalogo_products.json?t=${Date.now()}`;
+      const backupUrl = `https://res.cloudinary.com/${cloudName}/raw/upload/database_backups/catalogo_dama_products.json?t=${Date.now()}`;
       
       const res = await fetch(backupUrl);
       if (!res.ok) {
