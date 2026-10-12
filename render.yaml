@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: catalogo-caballeros
+    name: catalogo-dama-ropa
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: npm install && cd backend && npm install && node seed.mjs
+    startCommand: node backend/index.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -13,7 +13,7 @@ services:
       - key: ADMIN_PASS
         value: PATTYpschincha452416
       - key: JWT_SECRET
-        value: catalogo_caballeros_jwt_secure_key_452416_pattyps
+        value: catalogo_dama_jwt_secure_key_452416_pattyps
       - key: UPLOAD_DIR
         value: uploads
       - key: CLOUDINARY_CLOUD_NAME
