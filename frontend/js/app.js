@@ -241,7 +241,7 @@ function initEventListeners() {
 }
 
 // ==========================================================================
-// CAMBIO DE CATEGORÍAS PRINCIPALES (Ropa / Calzado / Todos)
+// CAMBIO DE CATEGORÍAS PRINCIPALES (Toda la Ropa / Marca / Normal)
 // ==========================================================================
 function switchCategoryTab(category) {
   AppState.activeCategory = category;
@@ -250,19 +250,19 @@ function switchCategoryTab(category) {
   // Limpiar selección de subcategorías
   document.querySelectorAll('.subcat-pill').forEach(p => p.classList.remove('active'));
 
-  const groupRopa = document.getElementById('subcatGroupRopa');
-  const groupCalzado = document.getElementById('subcatGroupCalzado');
+  const groupMarca = document.getElementById('subcatGroupMarca');
+  const groupNormal = document.getElementById('subcatGroupNormal');
 
-  if (category === 'ropa') {
-    if (groupRopa) groupRopa.classList.remove('hidden');
-    if (groupCalzado) groupCalzado.classList.add('hidden');
-  } else if (category === 'calzado') {
-    if (groupRopa) groupRopa.classList.add('hidden');
-    if (groupCalzado) groupCalzado.classList.remove('hidden');
+  if (category === 'marca') {
+    if (groupMarca) groupMarca.classList.remove('hidden');
+    if (groupNormal) groupNormal.classList.add('hidden');
+  } else if (category === 'normal') {
+    if (groupMarca) groupMarca.classList.add('hidden');
+    if (groupNormal) groupNormal.classList.remove('hidden');
   } else {
-    // Todos
-    if (groupRopa) groupRopa.classList.remove('hidden');
-    if (groupCalzado) groupCalzado.classList.remove('hidden');
+    // Todos / Toda la Ropa
+    if (groupMarca) groupMarca.classList.remove('hidden');
+    if (groupNormal) groupNormal.classList.remove('hidden');
   }
 
   applyFilters();
@@ -284,10 +284,10 @@ function resetAllFilters() {
 
   document.querySelectorAll('.subcat-pill').forEach(p => p.classList.remove('active'));
 
-  const groupRopa = document.getElementById('subcatGroupRopa');
-  const groupCalzado = document.getElementById('subcatGroupCalzado');
-  if (groupRopa) groupRopa.classList.remove('hidden');
-  if (groupCalzado) groupCalzado.classList.remove('hidden');
+  const groupMarca = document.getElementById('subcatGroupMarca');
+  const groupNormal = document.getElementById('subcatGroupNormal');
+  if (groupMarca) groupMarca.classList.remove('hidden');
+  if (groupNormal) groupNormal.classList.remove('hidden');
 
   applyFilters();
 }
@@ -332,11 +332,11 @@ async function loadProducts() {
 function applyFilters() {
   let list = [...AppState.products];
 
-  // 1. Filtro por categoría principal
-  if (AppState.activeCategory === 'ropa') {
-    list = list.filter(p => p.categoria_slug === 'ropa');
-  } else if (AppState.activeCategory === 'calzado') {
-    list = list.filter(p => p.categoria_slug === 'calzado');
+  // 1. Filtro por categoría principal (Toda la Ropa / Marca / Normal)
+  if (AppState.activeCategory === 'marca') {
+    list = list.filter(p => p.subcategoria_grupo === 'Marca' || p.subcategoria_grupo === 'Marcas');
+  } else if (AppState.activeCategory === 'normal') {
+    list = list.filter(p => p.subcategoria_grupo === 'Normal');
   }
 
   // 2. Filtro por subcategoría específica
@@ -367,9 +367,9 @@ function updateFilterBreadcrumbs() {
   const btnClearFilters = document.getElementById('btnClearAllFilters');
 
   let text = 'Mostrando: <strong>';
-  if (AppState.activeCategory === 'ropa') text += 'Ropa';
-  else if (AppState.activeCategory === 'calzado') text += 'Calzado';
-  else text += 'Todos los productos';
+  if (AppState.activeCategory === 'marca') text += 'Ropa de Marca';
+  else if (AppState.activeCategory === 'normal') text += 'Ropa Normal';
+  else text += 'Toda la Ropa';
 
   if (AppState.activeSubcategorySlug) {
     text += ` &bull; ${AppState.activeSubcategorySlug.replace(/-/g, ' ')}`;

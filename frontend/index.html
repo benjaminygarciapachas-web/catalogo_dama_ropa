@@ -86,7 +86,7 @@
       <div class="hero-tag">COLECCIÓN FEMENINA & MODA EXCLUSIVA</div>
       <h1 class="main-title" id="mainCatalogTitle">CATALOGO DAMA ROPA</h1>
       <p class="hero-subtitle">
-        Prendas seleccionadas, calzado de primera calidad y las mejores marcas para damas.
+        Prendas seleccionadas, ropa de marca y estilo casual para damas.
       </p>
 
       <!-- Barra de búsqueda rápida -->
@@ -145,71 +145,62 @@
         <span class="cat-tab-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         </span>
-        <span>Todos los Productos</span>
+        <span>Toda la Ropa</span>
       </button>
 
-      <button class="cat-tab" data-category="ropa" id="tabCategoryRopa">
+      <button class="cat-tab" data-category="marca" id="tabCategoryMarca">
+        <span class="cat-tab-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </span>
+        <span>Ropa de Marca</span>
+      </button>
+
+      <button class="cat-tab" data-category="normal" id="tabCategoryNormal">
         <span class="cat-tab-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>
         </span>
-        <span>Ropa</span>
-      </button>
-
-      <button class="cat-tab" data-category="calzado" id="tabCategoryCalzado">
-        <span class="cat-tab-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M2 18h20"/><circle cx="12" cy="7" r="4"/></svg>
-        </span>
-        <span>Calzado</span>
+        <span>Ropa Normal</span>
       </button>
     </nav>
 
     <!-- Subcategorías Dinámicas Exactas -->
     <section class="subcategories-container" id="subcategoriesSection">
-      <!-- ROPA: Grupo Marcas y Normal -->
       <div class="subcat-group-row" id="subcatGroupRopa">
         
-        <!-- Grupo MARCAS -->
-        <div class="subcat-group-block">
+        <!-- Grupo MARCA -->
+        <div class="subcat-group-block" id="subcatGroupMarca">
           <div class="subcat-group-header">
-            <span class="badge-group-title badge-fucsia">Marcas</span>
+            <span class="badge-group-title badge-fucsia">Marca</span>
           </div>
           <div class="subcat-pills-list">
-            <button class="subcat-pill" data-subcat-slug="camisas-de-marca">camisas de marca</button>
-            <button class="subcat-pill" data-subcat-slug="polos-de-marca">polos de marca</button>
-            <button class="subcat-pill" data-subcat-slug="pantalones-y-shorts-de-marca">pantalones y shorts de marca</button>
-            <button class="subcat-pill" data-subcat-slug="casacas-y-chompas-de-marca">casacas y chompas de marca</button>
+            <button class="subcat-pill" data-subcat-slug="polivestidos-de-marca">polivestidos de marca</button>
+            <button class="subcat-pill" data-subcat-slug="polos-y-blusas-de-marca">polos y blusas de marca</button>
+            <button class="subcat-pill" data-subcat-slug="chompas-y-casacas-de-marca">chompas y casacas de marca</button>
+            <button class="subcat-pill" data-subcat-slug="pantalones-shrots-marca">pantalones shrots marca</button>
             <button class="subcat-pill" data-subcat-slug="conjuntos-de-marca">conjuntos de marca</button>
           </div>
         </div>
 
         <!-- Grupo NORMAL -->
-        <div class="subcat-group-block">
+        <div class="subcat-group-block" id="subcatGroupNormal">
           <div class="subcat-group-header">
             <span class="badge-group-title badge-celeste">Normal</span>
           </div>
           <div class="subcat-pills-list">
-            <button class="subcat-pill" data-subcat-slug="polo-y-camisas">polo y camisas</button>
-            <button class="subcat-pill" data-subcat-slug="pantalones-y-shorts">pantalones y shorts</button>
+            <button class="subcat-pill" data-subcat-slug="pantalones-enterizos-y-jeans">pantalones, enterizos y jeans</button>
+            <button class="subcat-pill" data-subcat-slug="shorts-y-faldas">shorts y faldas</button>
+            <button class="subcat-pill" data-subcat-slug="plussize">plussize</button>
+            <button class="subcat-pill" data-subcat-slug="vestidos">vestidos</button>
+            <button class="subcat-pill" data-subcat-slug="polos">polos</button>
+            <button class="subcat-pill" data-subcat-slug="blusas">blusas</button>
+            <button class="subcat-pill" data-subcat-slug="poleras">poleras</button>
+            <button class="subcat-pill" data-subcat-slug="casacas">casacas</button>
+            <button class="subcat-pill" data-subcat-slug="chompas">chompas</button>
             <button class="subcat-pill" data-subcat-slug="conjuntos">conjuntos</button>
-            <button class="subcat-pill" data-subcat-slug="gorras">gorras</button>
+            <button class="subcat-pill" data-subcat-slug="ropa-fitnes">ropa_fitnes</button>
           </div>
         </div>
 
-      </div>
-
-      <!-- CALZADO: Zapatillas, Zapatos, Sandalias, CAT -->
-      <div class="subcat-group-row hidden" id="subcatGroupCalzado">
-        <div class="subcat-group-block full-width">
-          <div class="subcat-group-header">
-            <span class="badge-group-title badge-azul">Calzado Masculino</span>
-          </div>
-          <div class="subcat-pills-list">
-            <button class="subcat-pill" data-subcat-slug="zapatillas">Zapatillas</button>
-            <button class="subcat-pill" data-subcat-slug="zapatos">Zapatos</button>
-            <button class="subcat-pill" data-subcat-slug="sandalias">Sandalias</button>
-            <button class="subcat-pill" data-subcat-slug="cat">CAT</button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -353,7 +344,6 @@
             <label for="prodCategorySelect">Categoría</label>
             <select id="prodCategorySelect">
               <option value="1">Ropa</option>
-              <option value="2">Calzado</option>
             </select>
           </div>
 

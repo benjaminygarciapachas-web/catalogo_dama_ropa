@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS categorias (
 CREATE TABLE IF NOT EXISTS subcategorias (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     categoria_id INTEGER NOT NULL,
-    tipo_grupo VARCHAR(50) NOT NULL, -- 'Marcas', 'Normal' o 'Calzado'
+    tipo_grupo VARCHAR(50) NOT NULL, -- 'Marca' o 'Normal'
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

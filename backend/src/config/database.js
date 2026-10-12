@@ -51,29 +51,39 @@ function initDatabase() {
       console.log('👑 [DATABASE] Usuario Administrador PATTYps creado.');
     }
 
-    // 4. Categorías fijas
+    // 4. Categoría principal: Ropa (única y más grande)
     db.exec(`
+      DELETE FROM categorias WHERE id != 1;
       INSERT OR IGNORE INTO categorias (id, name, slug, icon) VALUES
-      (1, 'Ropa', 'ropa', 'shirt'),
-      (2, 'Calzado', 'calzado', 'footprints');
+      (1, 'Ropa', 'ropa', 'shirt');
+      UPDATE categorias SET name = 'Ropa', slug = 'ropa', icon = 'shirt' WHERE id = 1;
     `);
 
-    // 5. Subcategorías exactas
+    // 5. Subcategorías exactas para CATALOGO DAMA ROPA:
+    // Subdividida en Marca y Normal
     const subcats = [
-      { id: 1, categoria_id: 1, tipo_grupo: 'Marcas', name: 'camisas de marca', slug: 'camisas-de-marca' },
-      { id: 2, categoria_id: 1, tipo_grupo: 'Marcas', name: 'polos de marca', slug: 'polos-de-marca' },
-      { id: 3, categoria_id: 1, tipo_grupo: 'Marcas', name: 'pantalones y shorts de marca', slug: 'pantalones-y-shorts-de-marca' },
-      { id: 4, categoria_id: 1, tipo_grupo: 'Marcas', name: 'casacas y chompas de marca', slug: 'casacas-y-chompas-de-marca' },
-      { id: 5, categoria_id: 1, tipo_grupo: 'Marcas', name: 'conjuntos de marca', slug: 'conjuntos-de-marca' },
-      { id: 6, categoria_id: 1, tipo_grupo: 'Normal', name: 'polo y camisas', slug: 'polo-y-camisas' },
-      { id: 7, categoria_id: 1, tipo_grupo: 'Normal', name: 'pantalones y shorts', slug: 'pantalones-y-shorts' },
-      { id: 8, categoria_id: 1, tipo_grupo: 'Normal', name: 'conjuntos', slug: 'conjuntos' },
-      { id: 9, categoria_id: 2, tipo_grupo: 'Calzado', name: 'Zapatillas', slug: 'zapatillas' },
-      { id: 10, categoria_id: 2, tipo_grupo: 'Calzado', name: 'Zapatos', slug: 'zapatos' },
-      { id: 11, categoria_id: 2, tipo_grupo: 'Calzado', name: 'Sandalias', slug: 'sandalias' },
-      { id: 12, categoria_id: 1, tipo_grupo: 'Normal', name: 'gorras', slug: 'gorras' },
-      { id: 13, categoria_id: 2, tipo_grupo: 'Calzado', name: 'CAT', slug: 'cat' }
+      // Grupo Marca (5 subcategorías)
+      { id: 1, categoria_id: 1, tipo_grupo: 'Marca', name: 'polivestidos de marca', slug: 'polivestidos-de-marca' },
+      { id: 2, categoria_id: 1, tipo_grupo: 'Marca', name: 'polos y blusas de marca', slug: 'polos-y-blusas-de-marca' },
+      { id: 3, categoria_id: 1, tipo_grupo: 'Marca', name: 'chompas y casacas de marca', slug: 'chompas-y-casacas-de-marca' },
+      { id: 4, categoria_id: 1, tipo_grupo: 'Marca', name: 'pantalones shrots marca', slug: 'pantalones-shrots-marca' },
+      { id: 5, categoria_id: 1, tipo_grupo: 'Marca', name: 'conjuntos de marca', slug: 'conjuntos-de-marca' },
+      // Grupo Normal (11 subcategorías)
+      { id: 6, categoria_id: 1, tipo_grupo: 'Normal', name: 'pantalones, enterizos y jeans', slug: 'pantalones-enterizos-y-jeans' },
+      { id: 7, categoria_id: 1, tipo_grupo: 'Normal', name: 'shorts y faldas', slug: 'shorts-y-faldas' },
+      { id: 8, categoria_id: 1, tipo_grupo: 'Normal', name: 'plussize', slug: 'plussize' },
+      { id: 9, categoria_id: 1, tipo_grupo: 'Normal', name: 'vestidos', slug: 'vestidos' },
+      { id: 10, categoria_id: 1, tipo_grupo: 'Normal', name: 'polos', slug: 'polos' },
+      { id: 11, categoria_id: 1, tipo_grupo: 'Normal', name: 'blusas', slug: 'blusas' },
+      { id: 12, categoria_id: 1, tipo_grupo: 'Normal', name: 'poleras', slug: 'poleras' },
+      { id: 13, categoria_id: 1, tipo_grupo: 'Normal', name: 'casacas', slug: 'casacas' },
+      { id: 14, categoria_id: 1, tipo_grupo: 'Normal', name: 'chompas', slug: 'chompas' },
+      { id: 15, categoria_id: 1, tipo_grupo: 'Normal', name: 'conjuntos', slug: 'conjuntos' },
+      { id: 16, categoria_id: 1, tipo_grupo: 'Normal', name: 'ropa_fitnes', slug: 'ropa-fitnes' }
     ];
+
+    // Limpiar subcategorías antiguas que no correspondan
+    db.exec(`DELETE FROM subcategorias WHERE id > 16 OR categoria_id != 1;`);
 
     const insertSubcat = db.prepare(`
       INSERT OR REPLACE INTO subcategorias (id, categoria_id, tipo_grupo, name, slug)

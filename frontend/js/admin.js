@@ -92,49 +92,31 @@ const AdminModule = {
     if (!select) return;
 
     select.innerHTML = '';
-    const filtered = this.allSubcategories.filter(sc => sc.categoria_id === categoryId);
+    const filtered = this.allSubcategories.filter(sc => !categoryId || sc.categoria_id === categoryId);
 
-    if (categoryId === 1) {
-      // ROPA: Dividida en 'Marcas' y 'Normal'
-      const marcasGroup = document.createElement('optgroup');
-      marcasGroup.label = 'Marcas';
-      const normalGroup = document.createElement('optgroup');
-      normalGroup.label = 'Normal';
+    // ROPA: Dividida en 'Marca' y 'Normal'
+    const marcaGroup = document.createElement('optgroup');
+    marcaGroup.label = 'Marca';
+    const normalGroup = document.createElement('optgroup');
+    normalGroup.label = 'Normal';
 
-      filtered.forEach(sc => {
-        const opt = document.createElement('option');
-        opt.value = sc.id;
-        opt.textContent = sc.name;
-        if (selectedSubcatId && Number(selectedSubcatId) === sc.id) {
-          opt.selected = true;
-        }
+    filtered.forEach(sc => {
+      const opt = document.createElement('option');
+      opt.value = sc.id;
+      opt.textContent = sc.name;
+      if (selectedSubcatId && Number(selectedSubcatId) === sc.id) {
+        opt.selected = true;
+      }
 
-        if (sc.tipo_grupo === 'Marcas') {
-          marcasGroup.appendChild(opt);
-        } else {
-          normalGroup.appendChild(opt);
-        }
-      });
+      if (sc.tipo_grupo === 'Marca' || sc.tipo_grupo === 'Marcas') {
+        marcaGroup.appendChild(opt);
+      } else {
+        normalGroup.appendChild(opt);
+      }
+    });
 
-      select.appendChild(marcasGroup);
-      select.appendChild(normalGroup);
-    } else {
-      // CALZADO: Zapatillas, Zapatos, Sandalias
-      const calzadoGroup = document.createElement('optgroup');
-      calzadoGroup.label = 'Calzado';
-
-      filtered.forEach(sc => {
-        const opt = document.createElement('option');
-        opt.value = sc.id;
-        opt.textContent = sc.name;
-        if (selectedSubcatId && Number(selectedSubcatId) === sc.id) {
-          opt.selected = true;
-        }
-        calzadoGroup.appendChild(opt);
-      });
-
-      select.appendChild(calzadoGroup);
-    }
+    if (marcaGroup.children.length > 0) select.appendChild(marcaGroup);
+    if (normalGroup.children.length > 0) select.appendChild(normalGroup);
   },
 
   // ==========================================================================
