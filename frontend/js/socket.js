@@ -19,6 +19,9 @@ function initSocketConnection() {
       console.log('⚡ Conectado al servidor en tiempo real. Socket ID:', socket.id);
       updateConnectionStatus(true);
       emitUserPresence();
+      if (typeof window.loadProducts === 'function') {
+        window.loadProducts();
+      }
     });
 
     // Evento de Desconexión
@@ -59,6 +62,14 @@ function initSocketConnection() {
       showToast('🗑️ Un producto ha sido removido del catálogo.', 'toast-celeste');
       if (window.onRealTimeProductDeleted) {
         window.onRealTimeProductDeleted(payload.id);
+      }
+    });
+
+    // 4. Catálogo Limpiado / Vaciado en tiempo real
+    socket.on('catalog_cleared', () => {
+      console.log('🧹 [REAL-TIME] Catálogo limpiado por el administrador');
+      if (typeof window.loadProducts === 'function') {
+        window.loadProducts();
       }
     });
 

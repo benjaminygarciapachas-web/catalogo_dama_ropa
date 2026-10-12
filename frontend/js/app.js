@@ -753,3 +753,4 @@ window.handleDeleteProductClick = function(id, title) {
 
 window.openProductDetail = openProductDetail;
 window.resetAllFilters = resetAllFilters;
+window.loadProducts = loadProducts;
