@@ -165,31 +165,16 @@ function initEventListeners() {
     tabLoginCliente.addEventListener('click', () => {
       tabLoginCliente.classList.add('active');
       tabLoginAdmin.classList.remove('active');
-      usernameInput.placeholder = 'Tu nombre de usuario';
-      if (usernameInput.value === 'PATTYps') {
-        usernameInput.value = '';
-      }
+      if (usernameInput) usernameInput.placeholder = 'Tu nombre de usuario';
     });
 
     tabLoginAdmin.addEventListener('click', () => {
       tabLoginAdmin.classList.add('active');
       tabLoginCliente.classList.remove('active');
-      usernameInput.placeholder = 'Usuario de Administrador';
-      // Autocompletar el campo con PATTYps para que nunca quede vacío ni confunda
-      usernameInput.value = 'PATTYps';
-      if (passwordInput) passwordInput.focus();
-    });
-  }
-
-  // Botón para autorrellenar credenciales del Admin
-  const btnFillAdmin = document.getElementById('btnFillAdminCredentials');
-  if (btnFillAdmin) {
-    btnFillAdmin.addEventListener('click', () => {
-      usernameInput.value = 'PATTYps';
-      passwordInput.value = 'PATTYpschincha452416';
-      tabLoginAdmin.classList.add('active');
-      tabLoginCliente.classList.remove('active');
-      usernameInput.placeholder = 'Usuario de Administrador';
+      if (usernameInput) {
+        usernameInput.placeholder = 'Usuario de Administrador';
+        usernameInput.focus();
+      }
     });
   }
 
@@ -421,7 +406,7 @@ function renderProductsGrid(products) {
           </p>
           ${isAdmin 
             ? '<button class="btn btn-fucsia" onclick="AdminModule.openCreateModal()">➕ Publicar Primer Producto</button>' 
-            : '<button class="btn btn-azul" onclick="openLoginModal()">Iniciar Sesión (PATTYps)</button>'}
+            : '<button class="btn btn-azul" onclick="openLoginModal()">Iniciar Sesión</button>'}
         </div>
       `;
     }
@@ -626,11 +611,19 @@ function openProductDetail(productId) {
 function openLoginModal() {
   const modal = document.getElementById('loginModalOverlay');
   if (modal) modal.classList.remove('hidden');
+  const usernameInput = document.getElementById('loginUsernameInput');
+  const passwordInput = document.getElementById('loginPasswordInput');
+  if (usernameInput) usernameInput.value = '';
+  if (passwordInput) passwordInput.value = '';
 }
 
 function closeLoginModal() {
   const modal = document.getElementById('loginModalOverlay');
   if (modal) modal.classList.add('hidden');
+  const usernameInput = document.getElementById('loginUsernameInput');
+  const passwordInput = document.getElementById('loginPasswordInput');
+  if (usernameInput) usernameInput.value = '';
+  if (passwordInput) passwordInput.value = '';
 }
 
 async function handleLoginSubmit(e) {
@@ -641,13 +634,22 @@ async function handleLoginSubmit(e) {
   const tabLoginAdmin = document.getElementById('tabLoginAdmin');
   const submitBtn = document.getElementById('submitLoginBtnText') || document.getElementById('btnSubmitLogin');
 
+  const isAdminMode = tabLoginAdmin && tabLoginAdmin.classList.contains('active');
   let username = (usernameInput ? usernameInput.value : '').trim();
   const password = (passwordInput ? passwordInput.value : '').trim();
 
-  // Si está en Modo Administrador y el usuario está vacío, asignar PATTYps automáticamente
-  if (tabLoginAdmin && tabLoginAdmin.classList.contains('active') && !username) {
-    username = 'PATTYps';
-    if (usernameInput) usernameInput.value = 'PATTYps';
+  // En modo Administrador, exigir que se escriban manualmente usuario y contraseña
+  if (isAdminMode) {
+    if (!username) {
+      alert('Por favor ingresa tu nombre de usuario de Administrador.');
+      if (usernameInput) usernameInput.focus();
+      return;
+    }
+    if (!password) {
+      alert('Por favor ingresa tu contraseña de Administrador.');
+      if (passwordInput) passwordInput.focus();
+      return;
+    }
   }
 
   const originalText = submitBtn ? submitBtn.textContent : 'Ingresar al Catálogo';
@@ -685,9 +687,13 @@ async function handleLoginSubmit(e) {
     applyFilters();
 
     if (data.role === 'admin') {
-      window.showToast('👑 ¡Bienvenido Administrador PATTYps! Tienes control total.');
+      window.showToast('👑 ¡Bienvenido Administrador! Tienes control total.');
       AdminModule.toggleAdminPanel(true);
     } else {
+      if (isAdminMode) {
+        alert('Credenciales de Administrador incorrectas.');
+        return;
+      }
       window.showToast(`👋 Bienvenido al catálogo, ${data.user.username}`);
     }
 
