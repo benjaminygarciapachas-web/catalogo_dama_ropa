@@ -111,7 +111,7 @@ body {
   padding: 12px 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 16px;
 }
 
@@ -1979,6 +1979,7 @@ body {
     gap: 6px;
     width: 100%;
     box-sizing: border-box;
+    justify-content: flex-end;
   }
 
   .live-status-badge {
