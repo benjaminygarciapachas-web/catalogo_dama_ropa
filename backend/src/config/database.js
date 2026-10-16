@@ -83,8 +83,12 @@ function initDatabase() {
       { id: 17, categoria_id: 1, tipo_grupo: 'Normal', name: 'blazzer', slug: 'blazzer' }
     ];
 
-    // Limpiar subcategorías antiguas que no correspondan
-    db.exec(`DELETE FROM subcategorias WHERE id > 17 OR categoria_id != 1;`);
+    // Limpiar subcategorías antiguas que no correspondan de forma segura
+    try {
+      db.exec(`DELETE FROM subcategorias WHERE id > 17 OR categoria_id != 1;`);
+    } catch (e) {
+      // Ignorar si hay productos asociados a subcategorías antiguas
+    }
 
     const insertSubcat = db.prepare(`
       INSERT OR REPLACE INTO subcategorias (id, categoria_id, tipo_grupo, name, slug)

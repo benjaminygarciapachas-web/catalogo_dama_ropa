@@ -1,5 +1,5 @@
 // ==========================================================================
-// CATALOGO CABALLEROS - APLICACIÓN PRINCIPAL (FRONT-END)
+// CATALOGO DAMA ROPA - APLICACIÓN PRINCIPAL (FRONT-END)
 // ==========================================================================
 
 const AppState = {

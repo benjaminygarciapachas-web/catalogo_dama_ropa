@@ -21,4 +21,4 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD ["node", "backend/index.js"]
+CMD ["node", "server.js"]

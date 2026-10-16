@@ -4,8 +4,10 @@ services:
     runtime: node
     plan: free
     buildCommand: npm install && cd backend && npm install && node seed.mjs
-    startCommand: node backend/index.js
+    startCommand: node server.js
     envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
       - key: NODE_ENV
         value: production
       - key: ADMIN_USER

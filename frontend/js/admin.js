@@ -1,5 +1,5 @@
 // ==========================================================================
-// CATALOGO CABALLEROS - MÓDULO DE GESTIÓN Y PANEL DEL ADMINISTRADOR
+// CATALOGO DAMA ROPA - MÓDULO DE GESTIÓN Y PANEL DEL ADMINISTRADOR
 // ==========================================================================
 
 const AdminModule = {

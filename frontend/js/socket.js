@@ -1,5 +1,5 @@
 // ==========================================================================
-// CATALOGO CABALLEROS - MÓDULO SOCKET.IO Y TIEMPO REAL
+// CATALOGO DAMA ROPA - MÓDULO SOCKET.IO Y TIEMPO REAL
 // ==========================================================================
 
 let socket = null;

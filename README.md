@@ -1,27 +1,48 @@
-# CATALOGO CABALLEROS - Aplicación Full-Stack
+# CATALOGO DAMA ROPA - Aplicación Full-Stack
 
-Aplicación web profesional completa (Back-End + Front-End) de catálogo para caballeros con arquitectura modular, base de datos SQL, autenticación estricta con roles, gestión de productos con almacenamiento local (sin servicios externos) y sincronización multi-usuario en tiempo real mediante WebSockets.
+Aplicación web profesional completa (Back-End + Front-End) de catálogo de ropa para dama con arquitectura modular, base de datos SQLite sincronizada, almacenamiento persistente en la nube mediante Cloudinary, autenticación estricta con roles de usuario y administrador, y sincronización en tiempo real mediante WebSockets.
+
+---
+
+## 🚀 Despliegue en Render
+
+El proyecto está configurado para desplegarse fácilmente en **Render**:
+
+1. Conectar el repositorio de GitHub: `https://github.com/benjaminygarciapachas-web/catalogo_dama_ropa`
+2. **Build Command**: `npm install && cd backend && npm install && node seed.mjs`
+3. **Start Command**: `node server.js`
+4. **Node Version**: `>=22.5.0` (o especificar `NODE_VERSION: 22.12.0`)
+5. **Variables de Entorno Recomendadas**:
+   - `NODE_ENV`: `production`
+   - `PORT`: `10000`
+   - `ADMIN_USER`: `PATTYps`
+   - `ADMIN_PASS`: `PATTYpschincha452416`
+   - `JWT_SECRET`: `catalogo_dama_jwt_secure_key_452416_pattyps`
+   - `CLOUDINARY_CLOUD_NAME`: `hvoicb7h`
+   - `CLOUDINARY_API_KEY`: `296764566543229`
+   - `CLOUDINARY_API_SECRET`: `PjrI6SwHn6CAb5Dmsfh26m5wzlg`
 
 ---
 
 ## 📁 Estructura del Proyecto
 
 ```text
-catalogo__caballeros/
+catalogo_dama/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── database.js          # Conexión y helpers SQL (SQLite nativo)
+│   │   │   ├── database.js          # Conexión y helpers SQL (SQLite nativo Node 22+)
+│   │   │   ├── cloudinary.js        # Integración Cloudinary y sincronización en la nube
 │   │   │   ├── init.sql             # Esquema SQL (roles, usuarios, sesiones, categorías, subcategorías, productos)
 │   │   │   └── catalogo.sqlite      # Archivo de base de datos SQL local
 │   │   ├── controllers/
 │   │   │   ├── authController.js    # Lógica de login estricto y fallback de seguridad
 │   │   │   ├── sessionController.js # Monitoreo de sesiones en tiempo real
-│   │   │   ├── categoryController.js# Categorías y subcategorías exactas
+│   │   │   ├── categoryController.js# Categorías y subcategorías de ropa de dama
 │   │   │   └── productController.js # CRUD completo de productos con eventos Socket.io
 │   │   ├── middlewares/
-│   │   │   ├── authMiddleware.js    # JWT y protección exclusiva de rutas de administrador
-│   │   │   └── uploadMiddleware.js  # Multer para almacenamiento local de imágenes en /uploads
+│   │   │   ├── authMiddleware.js    # JWT y protección exclusiva de administrador
+│   │   │   └── uploadMiddleware.js  # Multer para procesamiento de imágenes
 │   │   ├── models/
 │   │   │   ├── userModel.js         # Consultas SQL para usuarios y roles
 │   │   │   ├── sessionModel.js      # Registro SQL de sesiones activas en tiempo real
@@ -32,103 +53,85 @@ catalogo__caballeros/
 │   │       ├── sessionRoutes.js     # Rutas /api/sessions (Panel en tiempo real)
 │   │       ├── categoryRoutes.js    # Rutas /api/categories
 │   │       └── productRoutes.js     # Rutas /api/products
-│   ├── uploads/                     # Carpeta local para almacenar fotos (PROHIBIDO CLOUDINARY)
-│   ├── .env                         # Variables de entorno
+│   ├── uploads/                     # Carpeta temporal para procesamiento de imágenes
+│   ├── .env                         # Variables de entorno locales
 │   ├── index.js                     # Servidor Express + CORS + WebSockets (Socket.IO)
 │   ├── package.json                 # Dependencias del backend
-│   └── seed.mjs                     # Script de inicialización con datos y fotos de muestra
+│   └── seed.mjs                     # Script de inicialización de datos base
 ├── frontend/
 │   ├── css/
-│   │   └── styles.css               # Diseño minimalista en tonos suaves (Celeste, Fucsia, Azul, Rojo, Rosa)
+│   │   └── styles.css               # Diseño moderno, responsivo y elegante
 │   ├── js/
-│   │   ├── app.js                   # Lógica principal, filtros dinámicos, lightbox y estado
+│   │   ├── app.js                   # Lógica principal, filtros dinámicos, lightbox y catálogo
 │   │   ├── socket.js                # Conexión WebSockets y presencia en tiempo real
-│   │   └── admin.js                 # Formulario de productos, subida de fotos y panel en vivo
-│   ├── assets/                      # Iconos y recursos estáticos
-│   └── index.html                   # Interfaz interactiva ("CATALOGO CABALLEROS")
-├── package.json                     # Scripts rápidos desde la raíz
+│   │   └── admin.js                 # Panel de administración, subida de prendas y sesiones
+│   └── index.html                   # Interfaz interactiva ("CATALOGO DAMA ROPA")
+├── server.js                        # Punto de entrada universal raíz
+├── render.yaml                      # Configuración automática para Render Blueprint
+├── Dockerfile                       # Contenedor listo para despliegues Docker
+├── .node-version                    # Versión de Node.js fijada a 22.12.0
+├── package.json                     # Scripts y dependencias principales
 └── README.md
 ```
 
 ---
 
-## ⚡ Requerimientos e Instalación
+## ⚡ Instalación y Ejecución Local
 
-### Requisitos Previos:
-- **Node.js**: v18+ (probado y optimizado en Node v24).
-- **NPM**: Gestor de paquetes estándar.
-
-### Pasos de Instalación:
-1. Clonar o ubicarse en la carpeta raíz del proyecto:
+1. Instalar dependencias:
    ```bash
-   cd d:\catalogo__caballeros
-   ```
-
-2. Instalar dependencias del backend:
-   ```bash
-   cd backend
    npm install
+   cd backend && npm install && cd ..
    ```
 
-3. Poblar la base de datos SQL con las categorías, subcategorías, administrador y productos de muestra:
+2. Inicializar base de datos:
    ```bash
    npm run seed
    ```
 
-4. Iniciar el servidor:
+3. Iniciar el servidor:
    ```bash
    npm start
    ```
 
-5. Abrir en el navegador web:
+4. Abrir en el navegador:
    ```text
-   http://localhost:3002
+   http://localhost:3000
    ```
 
 ---
 
-## 👑 Credenciales y Roles
+## 👑 Credenciales de Acceso
 
-- **Rol Administrador**:
-  - **Usuario exacto**: `PATTYps`
-  - **Contraseña exacta**: `PATTYpschincha452416`
-  - **Privilegios**:
-    - Subir nuevos productos con fotos guardadas en el disco local (`backend/uploads/`).
-    - Editar y eliminar cualquier producto con sincronización en tiempo real.
-    - Acceso al **Panel de Usuarios en Tiempo Real** para ver en vivo los nombres de los usuarios conectados.
+- **Administrador**:
+  - **Usuario**: `PATTYps`
+  - **Contraseña**: `PATTYpschincha452416`
+  - **Privilegios**: Subir prendas, modificar catálogo, eliminar productos y monitoreo en vivo de visitantes.
 
-- **Rol Cliente**:
-  - Puede ingresar con cualquier nombre de usuario (contraseña opcional).
-  - **Regla estricta de seguridad**: Si alguien introduce credenciales diferentes a las del administrador, el sistema lo cataloga de forma segura automáticamente como **Rol Cliente**.
+- **Cliente / Visitante**:
+  - Ingreso directo o con cualquier nombre de usuario invitado.
 
 ---
 
-## 📂 Categorías y Subcategorías Configuradas
+## 📂 Subcategorías de Ropa de Dama
 
-- **Ropa**:
-  - **Marcas**:
-    * camisas de marca
-    * polos de marca
-    * pantalones y shorts de marca
-    * casacas y chompas de marca
-    * conjuntos de marca
-  - **Normal**:
-    * polo y camisas
-    * pantalones y shorts
-    * conjuntos
-    * gorras
-- **Calzado**:
-  - Zapatillas
-  - Zapatos
-  - Sandalias
-  - CAT
+### Grupo Marca:
+1. polivestidos de marca
+2. polos y blusas de marca
+3. chompas y casacas de marca
+4. pantalones shrots marca
+5. conjuntos de marca
 
----
-
-## 🎨 Paleta de Colores
-Diseño moderno y minimalista basado en variaciones suaves de tonos claros:
-- **Celeste**: `#f0f9ff`, `#e0f2fe`, `#0284c7`
-- **Fucsia**: `#fdf2f8`, `#fce7f3`, `#db2777`
-- **Azul**: `#eff6ff`, `#dbeafe`, `#2563eb`
-- **Rojo**: `#fef2f2`, `#fee2e2`, `#ef4444`
-- **Rosa**: `#fff1f2`, `#ffe4e6`, `#f43f5e`
+### Grupo Normal:
+6. pantalones, enterizos y jeans
+7. shorts y faldas
+8. plussize
+9. vestidos
+10. polos
+11. blusas
+12. poleras
+13. casacas
+14. chompas
+15. conjuntos
+16. ropa_fitnes
+17. blazzer

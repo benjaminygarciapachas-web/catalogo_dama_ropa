@@ -1,5 +1,5 @@
 -- ===================================================
--- CATALOGO CABALLEROS - SCHEMA SQL DE BASE DE DATOS
+-- CATALOGO DAMA ROPA - SCHEMA SQL DE BASE DE DATOS
 -- ===================================================
 
 -- 1. TABLA DE ROLES

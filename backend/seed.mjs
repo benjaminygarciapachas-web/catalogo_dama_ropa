@@ -72,7 +72,7 @@ const subcats = [
   { id: 17, categoria_id: 1, tipo_grupo: 'Normal', name: 'blazzer', slug: 'blazzer' }
 ];
 
-db.exec(`DELETE FROM subcategorias;`);
+// Actualizar o insertar subcategorías de manera segura sin romper relaciones existentes
 
 const insertSubcat = db.prepare(`
   INSERT OR REPLACE INTO subcategorias (id, categoria_id, tipo_grupo, name, slug)
