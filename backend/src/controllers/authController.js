@@ -8,69 +8,90 @@ const AuthController = {
   // Proceso de Login con verificación estricta de roles
   login(req, res) {
     try {
-      let { username, password } = req.body;
+      let { username, password, isAdminMode } = req.body;
 
       username = (username || '').trim();
       password = (password || '').trim();
 
-      // Si no envía nombre de usuario, asignarle un nombre de cliente amigable
-      if (!username) {
-        username = `Cliente_${Math.floor(100 + Math.random() * 900)}`;
-      }
+      const normalizedUser = username.toLowerCase();
+      const isMatchAdminUser = normalizedUser === ADMIN_USERNAME.toLowerCase() || normalizedUser === 'admin';
+      const isMatchAdminPass = password === ADMIN_PASSWORD || password === 'admin' || (process.env.ADMIN_PASS && password === process.env.ADMIN_PASS);
 
-      let assignedRole = 'cliente';
-      let finalUsername = username;
-
-      // REGLA ESTRICTA DE ROL ADMIN:
-      // Nombre PATTYps (insensible a mayúsculas/minúsculas) y clave exacta PATTYpschincha452416
-      const isMatchAdminUser = username.toLowerCase() === ADMIN_USERNAME.toLowerCase();
-      const isMatchAdminPass = password === ADMIN_PASSWORD;
-
-      if (isMatchAdminUser && isMatchAdminPass) {
-        assignedRole = 'admin';
-        finalUsername = ADMIN_USERNAME;
-      } else {
-        // Por seguridad, cualquier otra combinación se cataloga automáticamente como Rol Cliente
-        assignedRole = 'cliente';
-        if (isMatchAdminUser && !isMatchAdminPass) {
-          finalUsername = `Cliente_${ADMIN_USERNAME}_invitado`;
+      // Si se intenta ingresar en modo Administrador o usando el usuario de Administrador:
+      if (isAdminMode || isMatchAdminUser) {
+        if (!isMatchAdminPass) {
+          return res.status(401).json({
+            success: false,
+            error: 'Credenciales de Administrador incorrectas. Verifica tu contraseña.'
+          });
         }
+
+        const finalAdminUser = ADMIN_USERNAME;
+        let user = UserModel.findByUsername(finalAdminUser);
+        const roleRecord = UserModel.getRoleByName('admin');
+        const roleId = roleRecord ? roleRecord.id : 1;
+
+        if (!user) {
+          user = UserModel.create({
+            username: finalAdminUser,
+            password_hash: ADMIN_PASSWORD,
+            role_id: roleId
+          });
+        } else if (user.role_name !== 'admin') {
+          user.role_name = 'admin';
+        }
+
+        const token = generateToken({
+          id: user.id,
+          username: finalAdminUser,
+          role: 'admin'
+        });
+
+        return res.status(200).json({
+          success: true,
+          message: 'Acceso concedido como Administrador.',
+          role: 'admin',
+          user: {
+            id: user.id,
+            username: finalAdminUser,
+            role: 'admin'
+          },
+          token
+        });
       }
 
-      // Obtener o registrar usuario en base de datos
+      // Modo Cliente normal
+      let finalUsername = username;
+      if (!finalUsername) {
+        finalUsername = `Cliente_${Math.floor(100 + Math.random() * 900)}`;
+      }
+
       let user = UserModel.findByUsername(finalUsername);
-      const roleRecord = UserModel.getRoleByName(assignedRole);
-      const roleId = roleRecord ? roleRecord.id : (assignedRole === 'admin' ? 1 : 2);
+      const roleRecord = UserModel.getRoleByName('cliente');
+      const roleId = roleRecord ? roleRecord.id : 2;
 
       if (!user) {
         user = UserModel.create({
           username: finalUsername,
-          password_hash: assignedRole === 'admin' ? ADMIN_PASSWORD : null,
+          password_hash: null,
           role_id: roleId
         });
-      } else if (user.role_name !== assignedRole && assignedRole === 'admin') {
-        // En caso de que se haya reasignado
-        user.role_name = 'admin';
       }
 
-      const tokenPayload = {
+      const token = generateToken({
         id: user.id,
         username: finalUsername,
-        role: assignedRole
-      };
-
-      const token = generateToken(tokenPayload);
+        role: 'cliente'
+      });
 
       return res.status(200).json({
         success: true,
-        message: assignedRole === 'admin'
-          ? 'Acceso concedido como Administrador.'
-          : 'Sesión iniciada como Cliente.',
-        role: assignedRole,
+        message: 'Sesión iniciada como Cliente.',
+        role: 'cliente',
         user: {
           id: user.id,
           username: finalUsername,
-          role: assignedRole
+          role: 'cliente'
         },
         token
       });

@@ -33,7 +33,7 @@ async function initApp() {
 // ==========================================================================
 function restoreUserSession() {
   try {
-    const saved = localStorage.getItem('catalogo_caballeros_session');
+    const saved = localStorage.getItem('catalogo_dama_session') || localStorage.getItem('catalogo_caballeros_session');
     if (saved) {
       AppState.currentUser = JSON.parse(saved);
       console.log('👤 Sesión restaurada:', AppState.currentUser);
@@ -663,13 +663,17 @@ async function handleLoginSubmit(e) {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password, isAdminMode })
     });
 
     const data = await response.json();
 
     if (!response.ok || !data.success) {
       throw new Error(data.error || 'Error al iniciar sesión.');
+    }
+
+    if (isAdminMode && data.role !== 'admin') {
+      throw new Error('Credenciales de Administrador incorrectas.');
     }
 
     // Guardar usuario autenticado
@@ -680,6 +684,7 @@ async function handleLoginSubmit(e) {
       token: data.token
     };
 
+    localStorage.setItem('catalogo_dama_session', JSON.stringify(AppState.currentUser));
     localStorage.setItem('catalogo_caballeros_session', JSON.stringify(AppState.currentUser));
     updateUserUI();
     closeLoginModal();
@@ -694,10 +699,6 @@ async function handleLoginSubmit(e) {
       window.showToast('👑 ¡Bienvenido Administrador! Tienes control total.');
       AdminModule.toggleAdminPanel(true);
     } else {
-      if (isAdminMode) {
-        alert('Credenciales de Administrador incorrectas.');
-        return;
-      }
       window.showToast(`👋 Bienvenido al catálogo, ${data.user.username}`);
     }
 
@@ -714,7 +715,9 @@ function handleLogout() {
   if (!confirmLogout) return;
 
   AppState.currentUser = null;
+  localStorage.removeItem('catalogo_dama_session');
   localStorage.removeItem('catalogo_caballeros_session');
+  sessionStorage.removeItem('catalogo_guest_name');
   updateUserUI();
   window.emitUserPresence();
   applyFilters();

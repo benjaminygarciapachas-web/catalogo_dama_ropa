@@ -98,9 +98,23 @@ function emitUserPresence() {
   if (!socket || !socket.connected) return;
 
   const currentUser = window.AppState ? window.AppState.currentUser : null;
-  const username = currentUser ? currentUser.username : `Cliente_${Math.floor(100 + Math.random() * 900)}`;
-  const role = currentUser ? currentUser.role : 'cliente';
-  const userId = currentUser ? currentUser.id : null;
+  let username;
+  let role = 'cliente';
+  let userId = null;
+
+  if (currentUser && currentUser.username) {
+    username = currentUser.username;
+    role = currentUser.role || 'cliente';
+    userId = currentUser.id || null;
+  } else {
+    let guestUsername = sessionStorage.getItem('catalogo_guest_name');
+    if (!guestUsername) {
+      guestUsername = `Cliente_${Math.floor(100 + Math.random() * 900)}`;
+      sessionStorage.setItem('catalogo_guest_name', guestUsername);
+    }
+    username = guestUsername;
+    role = 'cliente';
+  }
 
   socket.emit('register_presence', {
     username,
