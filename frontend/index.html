@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Estilos CSS -->
-  <link rel="stylesheet" href="/css/styles.css?v=3">
+  <link rel="stylesheet" href="/css/styles.css?v=5">
 </head>
 <body>
 
@@ -233,11 +233,11 @@
 
       <!-- Selector de Tipo de Ingreso -->
       <div class="login-role-selector">
-        <button type="button" class="role-selector-tab active" id="tabLoginCliente" data-mode="cliente">
-          <span>Modo Cliente</span>
-        </button>
-        <button type="button" class="role-selector-tab" id="tabLoginAdmin" data-mode="admin">
+        <button type="button" class="role-selector-tab active" id="tabLoginAdmin" data-mode="admin">
           <span>Modo Administrador</span>
+        </button>
+        <button type="button" class="role-selector-tab" id="tabLoginCliente" data-mode="cliente">
+          <span>Modo Cliente</span>
         </button>
       </div>
 
@@ -247,10 +247,11 @@
           <input 
             type="text" 
             id="loginUsernameInput" 
-            placeholder="Introduce tu usuario..." 
+            value="PATTYps"
+            placeholder="PATTYps" 
             autocomplete="off"
           >
-          <span class="field-hint" id="usernameHint">Ingresa tu nombre o usuario.</span>
+          <span class="field-hint" id="usernameHint">Usuario de Administrador (PATTYps).</span>
         </div>
 
         <div class="form-group" id="passwordGroup">
@@ -475,8 +476,8 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <!-- SCRIPTS MODULARES DE LA APLICACIÓN -->
-  <script src="/js/socket.js"></script>
-  <script src="/js/admin.js"></script>
-  <script src="/js/app.js?v=3"></script>
+  <script src="/js/socket.js?v=5"></script>
+  <script src="/js/admin.js?v=5"></script>
+  <script src="/js/app.js?v=5"></script>
 </body>
 </html>

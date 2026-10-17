@@ -169,15 +169,21 @@ function initEventListeners() {
     tabLoginCliente.addEventListener('click', () => {
       tabLoginCliente.classList.add('active');
       tabLoginAdmin.classList.remove('active');
-      if (usernameInput) usernameInput.placeholder = 'Tu nombre de usuario';
+      if (usernameInput) {
+        usernameInput.value = '';
+        usernameInput.placeholder = 'Tu nombre de usuario';
+        usernameInput.focus();
+      }
     });
 
     tabLoginAdmin.addEventListener('click', () => {
       tabLoginAdmin.classList.add('active');
       tabLoginCliente.classList.remove('active');
-      if (usernameInput) {
-        usernameInput.placeholder = 'Usuario de Administrador';
-        usernameInput.focus();
+      if (usernameInput && !usernameInput.value) {
+        usernameInput.value = 'PATTYps';
+      }
+      if (passwordInput) {
+        passwordInput.focus();
       }
     });
   }
@@ -617,8 +623,24 @@ function openLoginModal() {
   if (modal) modal.classList.remove('hidden');
   const usernameInput = document.getElementById('loginUsernameInput');
   const passwordInput = document.getElementById('loginPasswordInput');
-  if (usernameInput) usernameInput.value = '';
-  if (passwordInput) passwordInput.value = '';
+  const tabLoginAdmin = document.getElementById('tabLoginAdmin');
+  const tabLoginCliente = document.getElementById('tabLoginCliente');
+
+  if (tabLoginAdmin && tabLoginCliente) {
+    tabLoginAdmin.classList.add('active');
+    tabLoginCliente.classList.remove('active');
+  }
+
+  if (usernameInput) {
+    usernameInput.value = 'PATTYps';
+    usernameInput.placeholder = 'PATTYps';
+  }
+  if (passwordInput) {
+    passwordInput.value = '';
+    setTimeout(() => {
+      try { passwordInput.focus(); } catch (e) {}
+    }, 150);
+  }
 }
 
 function closeLoginModal() {
@@ -642,12 +664,11 @@ async function handleLoginSubmit(e) {
   let username = (usernameInput ? usernameInput.value : '').trim();
   const password = (passwordInput ? passwordInput.value : '').trim();
 
-  // En modo Administrador, exigir que se escriban manualmente usuario y contraseña
+  // En modo Administrador, permitir 'PATTYps' por defecto si el campo está vacío
   if (isAdminMode) {
     if (!username) {
-      alert('Por favor ingresa tu nombre de usuario de Administrador.');
-      if (usernameInput) usernameInput.focus();
-      return;
+      username = 'PATTYps';
+      if (usernameInput) usernameInput.value = username;
     }
     if (!password) {
       alert('Por favor ingresa tu contraseña de Administrador.');
